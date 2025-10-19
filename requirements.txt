@@ -1,9 +1,0 @@
-cat > requirements.txt <<EOL
-numpy
-pandas
-scikit-learn
-torch
-torchvision
-matplotlib
-tqdm
-EOL

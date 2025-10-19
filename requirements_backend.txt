@@ -1,0 +1,23 @@
+# Backend Requirements for Action Anticipation API
+# Install with: pip install -r requirements_backend.txt
+
+# FastAPI and server
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# ONNX Runtime for model inference
+onnxruntime==1.16.3
+
+# Data processing
+numpy==1.24.3
+pandas==2.0.3
+
+# Video processing
+opencv-python==4.8.1.78
+
+# HTTP and CORS
+python-multipart==0.0.6
+
+# Optional: For better performance
+# onnxruntime-gpu==1.16.3  # Uncomment if you have GPU support
+
