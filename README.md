@@ -61,8 +61,6 @@ npm run dev
 ## API Endpoints
 
 - **Backend API:** http://localhost:8001
-- **API Documentation:** http://localhost:8001/docs
-- **Health Check:** http://localhost:8001/health
 
 ## Models
 
