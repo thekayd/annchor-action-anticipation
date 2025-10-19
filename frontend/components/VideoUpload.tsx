@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface Props {
   onPredictFromVideo: (result: any, videoFile: File) => void;
@@ -21,6 +21,47 @@ export default function VideoUpload({
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string>("gru");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // this acceots file and modeltype as inputs to process video with selected model
+  const processVideoWithModel = async (file: File, modelType: string) => {
+    setLoading(true);
+    setError(null);
+    setUploadError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch(
+        `http://localhost:8001/predict-continuous?model_type=${modelType}`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || "Failed to process video");
+      }
+
+      const result = await response.json();
+      onPredictFromVideo(result, file);
+    } catch (error: any) {
+      const errorMsg = error.message || "Failed to process video";
+      setUploadError(errorMsg);
+      setError(errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // This useeffect allows for re processing the video when model changes
+  useEffect(() => {
+    if (uploadedFile && !loading) {
+      processVideoWithModel(uploadedFile, selectedModel);
+    }
+  }, [selectedModel]); // the selected model then only re-runs when selectedModel changes
 
   // this handles the video file upload
   const handleVideoUpload = async (
@@ -45,38 +86,8 @@ export default function VideoUpload({
     setUploadedFile(file);
     onVideoSelect(file.name);
 
-    // Upload video to backend for continuous predictions
-    setLoading(true);
-    setError(null);
-
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch(
-        `http://localhost:8001/predict-continuous?model_type=${selectedModel}`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.detail || "Failed to process video");
-      }
-
-      const result = await response.json();
-
-      // the continuous predictions get passed to the parent component and the video file
-      onPredictFromVideo(result, file);
-    } catch (error: any) {
-      const errorMsg = error.message || "Failed to upload video";
-      setUploadError(errorMsg);
-      setError(errorMsg);
-    } finally {
-      setLoading(false);
-    }
+    // processes the video with the currently selected model
+    await processVideoWithModel(file, selectedModel);
   };
 
   return (
