@@ -1,0 +1,38 @@
+DATASET INFORMATION
+==================
+
+Dataset Name: AnnChor (Action Anticipation in Choreography)
+URL: https://github.com/dvanderhaar/UJAnnChor
+Paper: "AnnChor: A Video Dataset for Temporal Action
+Localization in Classical Ballet Choreography" - 2023
+
+Dataset Description:
+- Total Videos: 1,020 ballet performance videos
+- Training Set: 816 videos
+- Test Set: 204 videos
+- Action Classes: 11 different ballet movements
+- Video Duration: Variable length sequences
+- Features: Pre-extracted I3D RGB features (10 frames × 2048 dimensions)
+
+Action Classes:
+1. Arabesque
+2. Attitude
+3. Battement
+4. Chassé
+5. Développé
+6. Grand jeté
+7. Pas de bourrée
+8. Pirouette
+9. Plie
+10. Relevé
+11. Tendu
+
+Model Performance:
+- Best Accuracy: 66.88%
+- Best Performing Class: Pirouette (95% accuracy)
+- Architecture: 2-layer GRU with 512 hidden units
+- Input Features: I3D RGB features (10×2048)
+- Training: Supervised learning on pre-extracted features
+
+Note: This project uses pre-extracted I3D features from the AnnChor dataset.
+For inference on new videos, the system generates I3D-like features for demonstration purposes.

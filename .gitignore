@@ -61,7 +61,7 @@ temp/
 *.pb
 
 # Data files
-data/
+
 *.csv
 *.json
 *.pkl
